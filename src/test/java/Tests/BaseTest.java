@@ -19,6 +19,7 @@ public class BaseTest {
     public void setup(){
         Allure.step("DriverFactory Call It And The Driver Fill");
         driver = DriverFactory.getDriver();
+        driver.get("https://www.enuygun.com/");
     }
 
     @AfterClass(description = "DriverFactory Turn Off")
