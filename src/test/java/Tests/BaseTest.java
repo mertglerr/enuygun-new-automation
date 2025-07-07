@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeClass;
 @Feature("The Driver Be Active ")
 public class BaseTest {
 
-    private static WebDriver driver;
+    protected static WebDriver driver;
 
 
     @BeforeClass(description = "DriverFactory Call It")
