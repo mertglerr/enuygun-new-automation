@@ -1,6 +1,7 @@
 package Tests;
 
 import Pages.GuestInfoPage;
+import Pages.HomePage;
 import Pages.HotelSearchPage;
 import Pages.PaymentPage;
 import Utils.LogHelper;
@@ -31,7 +32,9 @@ public class HotelReservationTest extends BaseTest {
         GuestInfoPage guestInfoPage = new GuestInfoPage(driver);
         PaymentPage paymentPage = new PaymentPage(driver);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        HomePage homePage = new HomePage(driver);
 
+        homePage.acceptcookie();
 
         // Ziyaretçi "Otel" butonuna tıklar
         Allure.step("Ziyaretçi Otel butonuna tıklar");
