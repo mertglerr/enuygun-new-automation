@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeClass;
 @Feature("The Driver Be Active ")
 public class BaseTest {
 
-    private static WebDriver driver;
+    protected static WebDriver driver;
 
 
     @BeforeClass(description = "DriverFactory Call It")
@@ -27,6 +27,6 @@ public class BaseTest {
     @Story("Wait For The Driver To Be İnactive")
     public void teardown(){
       Allure.step("DriverFactory Call It And The Driver Be Emptys");
-      DriverFactory.quitDriver();
+//      DriverFactory.quitDriver();
     }
 }
