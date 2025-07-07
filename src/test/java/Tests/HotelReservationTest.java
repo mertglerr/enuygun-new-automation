@@ -143,7 +143,7 @@ public class HotelReservationTest extends BaseTest {
         softAssert.assertAll();
 
         //  Testin başarıyla tamamlandığını bildir
-        System.out.println(" Otel rezervasyonu testi başarıyla tamamlandı.");
+        System.out.println(" Otel rezervasyonu testi başarıyla tamamlandı..");
 
 
     }
