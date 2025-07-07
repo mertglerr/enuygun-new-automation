@@ -16,7 +16,7 @@ import java.util.List;
 
 public class RMethods {
 
-
+    //Flight
     public static void ListWait(WebDriver driver, String ElementID){
 
         // Bekleme süresi
@@ -207,6 +207,10 @@ public class RMethods {
 
 
     }
+
+
+
+    //Hotel
 
 
 
