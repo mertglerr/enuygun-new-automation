@@ -27,6 +27,6 @@ public class BaseTest {
     @Story("Wait For The Driver To Be İnactive")
     public void teardown(){
       Allure.step("DriverFactory Call It And The Driver Be Emptys");
-      DriverFactory.quitDriver();
+//      DriverFactory.quitDriver();
     }
 }
