@@ -1,27 +1,31 @@
 package Tests;
 
+import Pages.CarPage;
 import Pages.HomePage;
-import Pages.HomePageCar;
 import Utils.DriverFactory;
 import Utils.RMethods;
-import org.openqa.selenium.WebElement;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
-import java.sql.DriverManager;
+public class carRentalTest extends RMethods{
 
-public class carRentalTest {
 
-    HomePageCar homePageCar = new HomePageCar();
-
+    CarPage carPage = new CarPage();
+    HomePage homePage = new HomePage(DriverFactory.getDriver());
 
     @Test(priority = 1, description = "")
-    public void carSelectionTest() throws InterruptedException {
-        DriverFactory.getDriver().get("https://www.enuygun.com/");
-        Thread.sleep(5000);
-        homePageCar.cookieAccept.click();
-        Thread.sleep(5000);
-        homePageCar.homepageCarRentalBtn.click();
-
+    @Severity(SeverityLevel.CRITICAL)
+    public void carSelectionTest() {
+        homePage.acceptcookie();
+        carPage.locationSelect();
+        carPage.selectCheckInAndCheckOutDates();
+        carPage.pickUpAndDropOffTime();
+        carPage.carSearch.click();
+        carPage.carFiltering();
+        carPage.carSelect();
+        carPage.personInformationForm();
+        System.out.println();
     }
 
 }

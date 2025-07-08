@@ -25,7 +25,7 @@ public class RMethods extends BaseTest {
 
   // Hotel
 
-    public void clickElementByDataId(String elementId) {
+    public static void clickElementByDataId(String elementId) {
         // Create XPath from id parameter
         String xpath = "//*[@data-testid='" + elementId + "']";
 
@@ -39,7 +39,7 @@ public class RMethods extends BaseTest {
         element.click();
     }
 
-    public void clickAndSendKeysByDataId(String elementId, String text) {
+    public static void clickAndSendKeysByDataId(String elementId, String text) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         String xpath = "//*[@data-testid='" + elementId + "']";
 
@@ -61,7 +61,7 @@ public class RMethods extends BaseTest {
         element.click();
     }
 
-    public void waitFor(long milliseconds) {
+    public static void waitFor(long milliseconds) {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
@@ -86,7 +86,7 @@ public class RMethods extends BaseTest {
         }
     }
 
-    public void scrollTo(WebElement element) {
+    public static void scrollTo(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", element);
     }
 
