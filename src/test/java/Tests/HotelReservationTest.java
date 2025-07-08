@@ -26,7 +26,7 @@ public class HotelReservationTest extends BaseTest {
     @Story("HotelBookingHappyPathTest")
     public void hotelBookingHappyPathTest() throws InterruptedException {
 
-        // Sayfa ve yardımcı sınıflar başlatılıyor
+        // Initializing page and helper classes
         RMethods utils = new RMethods();
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         GuestInfoPage guestInfoPage = new GuestInfoPage(driver);
@@ -34,122 +34,120 @@ public class HotelReservationTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         HomePage homePage = new HomePage(driver);
 
+        // Cookie accept
+        Allure.step("Cookie accept");
         homePage.acceptcookie();
+        logger.info("Cookie accept");
 
-        // Ziyaretçi "Otel" butonuna tıklar
-        Allure.step("Ziyaretçi Otel butonuna tıklar");
+
+        // Visitor clicks on the "Hotel" button
+        Allure.step("Visitor clicks on the Hotel button");
         utils.clickElementByDataId("endesign-[unnamed]-tab-button-1");
-        logger.info("Ziyaretçi Otel butonuna tıklar");
+        logger.info("Visitor clicks on the Hotel button");
 
-        // Ziyaretçi şehir, tarih ve konuk sayısı bilgilerini girer, ardından "Otel Bul" butonuna tıklar
-        Allure.step("Ziyaretçi şehir, tarih ve konuk sayısı bilgilerini girer, ardından Otel Bul butonuna tıklar");
+        // Visitor enters city, date, and guest number, then clicks on "Find Hotel"
+        Allure.step("Visitor enters city, date, and guest number, then clicks on Find Hotel button");
         hotelSearchPage.hotelReservation();
-        logger.info(" Ziyaretçi şehir, tarih ve konuk sayısı bilgilerini girer, ardından Otel Bul butonuna tıklar");
+        logger.info("Visitor enters city, date, and guest number, then clicks on Find Hotel button");
 
-        // Ziyaretçi fiyatları azalan şekilde sıralar
-        Allure.step("Ziyaretçi fiyatları azalan şekilde sıralar");
+        // Visitor sorts prices in descending order
+        Allure.step("Visitor sorts prices in descending order");
         utils.clickElementByDataId("sort-fiyat-azalan-button");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//*[@data-testid='hotel-select-button'])[1]")));
-        logger.info("Ziyaretçi fiyatları azalan şekilde sıralar");
+        logger.info("Visitor sorts prices in descending order");
 
-        // Ziyaretçi listeden rastgele bir otel seçer
-        Allure.step("Ziyaretçi listeden rastgele bir otel seçer");
+        // Visitor selects a random hotel from the list
+        Allure.step("Visitor selects a random hotel from the list");
         hotelSearchPage.randomSelectHotel();
-        logger.info("Ziyaretçi listeden rastgele bir otel seçer");
+        logger.info("Visitor selects a random hotel from the list");
 
-
-        // Ziyaretçi en uygun oda için "Odayı Ayır" butonunu görür ve tıklar
-        Allure.step("Ziyaretçi en uygun oda için Odayı Ayır butonunu görür ve tıklar");
+        // Visitor sees and clicks on the "Reserve Room" button for the best room
+        Allure.step("Visitor sees and clicks on the Reserve Room button for the best room");
         By roomCheckButtonLocator = By.xpath("(//*[@data-testid='offer-select-room-button'])[1]");
         wait.until(ExpectedConditions.elementToBeClickable(roomCheckButtonLocator));
         WebElement roomCheckButton = driver.findElement(roomCheckButtonLocator);
-        logger.info("Ziyaretçi en uygun oda için Odayı Ayır butonunu görür ve tıklar");
+        logger.info("Visitor sees and clicks on the Reserve Room button for the best room");
 
         utils.scrollTo(hotelSearchPage.roomCheckButton);
-        Assert.assertTrue(hotelSearchPage.roomCheckButton.isDisplayed(), " Oda seçme butonu görünmüyor!");
+        Assert.assertTrue(hotelSearchPage.roomCheckButton.isDisplayed(), "Room selection button is not visible!");
         hotelSearchPage.roomCheckButton.click();
 
-        // Ziyaretçi konuk bilgileri sayfasına yönlendirilir ve formu doldurur
-        Allure.step("Ziyaretçi konuk bilgileri sayfasına yönlendirilir ve formu doldurur");
+        // Visitor is redirected to the guest information page and fills out the form
+        Allure.step("Visitor is redirected to the guest information page and fills out the form");
         Assert.assertTrue(driver.findElement(By.xpath("//*[@data-testid='contact-email']")).isDisplayed());
         guestInfoPage.inputGuestDetails();
-        logger.info("Ziyaretçi konuk bilgileri sayfasına yönlendirilir ve formu doldurur");
+        logger.info("Visitor is redirected to the guest information page and fills out the form");
 
-        // Ziyaretçi "Ödemeye İlerle" butonuna tıklar
-        Allure.step("Ziyaretçi Ödemeye İlerle butonuna tıklar");
+        // Visitor clicks on the "Proceed to Payment" button
+        Allure.step("Visitor clicks on the Proceed to Payment button");
         utils.clickElementByDataId("reservation-form-submit-button");
         wait.until(ExpectedConditions.visibilityOf(paymentPage.cartNoButton));
-        logger.info("Ziyaretçi Ödemeye İlerle butonuna tıklar");
+        logger.info("Visitor clicks on the Proceed to Payment button");
 
-        // 🧾 Ziyaretçi konuk bilgilerini doğrular
-        Allure.step("Ziyaretçi konuk bilgilerini doğrular");
+        // 🧾 Visitor verifies guest information
+        Allure.step("Visitor verifies guest information");
         SoftAssert softAssert = new SoftAssert();
 
         softAssert.assertEquals(
                 guestInfoPage.getMail(),
                 paymentPage.mailButton.getAttribute("value"),
-                " Mail adresi uyuşmuyor!"
+                "Email address does not match!"
         );
 
-
-        utils.clickElementByDataId("toggle-content");   // 1.kisi bilgilerine tiklar
+        utils.clickElementByDataId("toggle-content");   // Clicks on guest 1 info section
 
         softAssert.assertEquals(
                 guestInfoPage.getName(),
                 paymentPage.nameButton.getAttribute("value"),
-                " İsim uyuşmuyor!"
+                "First name does not match!"
         );
 
         softAssert.assertEquals(
                 guestInfoPage.getLastname(),
                 paymentPage.lastnameButton.getAttribute("value"),
-                " Soyisim uyuşmuyor!"
+                "Last name does not match!"
         );
-        logger.info("Ziyaretçi konuk bilgilerini doğrular");
+        logger.info("Visitor verifies guest information");
 
-
-        //  Ziyaretçi seçilen otel adını ödeme sayfasında doğrular
-        Allure.step("Ziyaretçi seçilen otel adını ödeme sayfasında doğrular");
+        // Visitor verifies the selected hotel name on the payment page
+        Allure.step("Visitor verifies the selected hotel name on the payment page");
         String actualHotelName = paymentPage.hotelName.getText();
-        System.out.println("Seçilen otel adı      : " + hotelSearchPage.selectedHotelName);
-        System.out.println("Ödeme sayfası otel adı: " + actualHotelName);
+        System.out.println("Selected hotel name       : " + hotelSearchPage.selectedHotelName);
+        System.out.println("Hotel name on payment page: " + actualHotelName);
 
         softAssert.assertEquals(
                 actualHotelName,
                 hotelSearchPage.selectedHotelName,
-                " Otel adı uyuşmuyor!"
+                "Hotel name does not match!"
         );
-        logger.info("iyaretçi seçilen otel adını ödeme sayfasında doğrular");
+        logger.info("Visitor verifies the selected hotel name on the payment page");
 
-        //  Giriş ve çıkış tarihlerini ödeme sayfasında doğrular
-        Allure.step("Giriş ve çıkış tarihlerini ödeme sayfasında doğrular");
+        // Visitor verifies check-in and check-out dates on the payment page
+        Allure.step("Visitor verifies check-in and check-out dates on the payment page");
         String actualCheckInDate = paymentPage.checkinDate.getText();
         String actualCheckOutDate = paymentPage.checkOutDate.getText();
 
-        System.out.println("Seçilen Giriş Tarihi      : " + hotelSearchPage.checkInDatePretty);
-        System.out.println("Ödeme Sayfası Giriş Tarihi: " + actualCheckInDate);
-        System.out.println("Seçilen Çıkış Tarihi      : " + hotelSearchPage.checkOutDatePretty);
-        System.out.println("Ödeme Sayfası Çıkış Tarihi: " + actualCheckOutDate);
+        System.out.println("Selected Check-in Date       : " + hotelSearchPage.checkInDatePretty);
+        System.out.println("Check-in Date on Payment Page: " + actualCheckInDate);
+        System.out.println("Selected Check-out Date      : " + hotelSearchPage.checkOutDatePretty);
+        System.out.println("Check-out Date on Payment Page: " + actualCheckOutDate);
 
         Assert.assertEquals(
                 actualCheckInDate,
                 hotelSearchPage.checkInDatePretty,
-                " Giriş tarihi uyuşmuyor!"
+                "Check-in date does not match!"
         );
         Assert.assertEquals(
                 actualCheckOutDate,
                 hotelSearchPage.checkOutDatePretty,
-                " Çıkış tarihi uyuşmuyor!"
+                "Check-out date does not match!"
         );
-        logger.info("Giriş ve çıkış tarihlerini ödeme sayfasında doğrular");
+        logger.info("Visitor verifies check-in and check-out dates on the payment page");
 
         softAssert.assertAll();
 
-        //  Testin başarıyla tamamlandığını bildir
-        System.out.println(" Otel rezervasyonu testi başarıyla tamamlandı..");
-
+        // Notify that the test has been successfully completed
+        System.out.println("Hotel reservation test completed successfully..");
 
     }
 }
-
-

@@ -26,16 +26,16 @@ public class RMethods extends BaseTest {
   // Hotel
 
     public void clickElementByDataId(String elementId) {
-        // XPath'i id parametresinden oluştur
+        // Create XPath from id parameter
         String xpath = "//*[@data-testid='" + elementId + "']";
 
-        // Elementi bul
+        // Find the element
         WebElement element = driver.findElement(By.xpath(xpath));
 
-        // Görünürlük kontrolü (opsiyonel)
-        Assert.assertTrue(element.isDisplayed(), "Element görünmüyor: " + elementId);
+        // Visibility check (optional)
+        Assert.assertTrue(element.isDisplayed(), "Element is not visible: " + elementId);
 
-        // Tıkla
+        // Click
         element.click();
     }
 
@@ -43,16 +43,16 @@ public class RMethods extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         String xpath = "//*[@data-testid='" + elementId + "']";
 
-        // Elementin varlığını ve görünürlüğünü bekle
+        // Wait for the element to exist and be visible
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
 
-        // Eğer element input veya textarea ise tıklamaya gerek yok, değilse tıkla
+        // If the element is input or textarea, no need to click, otherwise click
         String tagName = element.getTagName();
         if (!tagName.equalsIgnoreCase("input") && !tagName.equalsIgnoreCase("textarea")) {
             element.click();
         }
 
-        // Metin gönder
+        // Send text
         element.sendKeys(text);
     }
 
@@ -65,21 +65,21 @@ public class RMethods extends BaseTest {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
-            // Thread beklenmedik şekilde kesilirse, interrupt durumunu geri bildiriyoruz
+            // If the thread is unexpectedly interrupted, re-signal the interrupt status
             Thread.currentThread().interrupt();
             System.out.println("Wait interrupted: " + e.getMessage());
         }
     }
 
     public void switchToNewTab() {
-        // Tüm pencere/sekme handle'larını al
+        // Get all window/tab handles
         Set<String> windowHandles = driver.getWindowHandles();
         String currentHandle = driver.getWindowHandle();
 
-        // Yeni açılan sekmenin handle'ını bulmak için
+        // To find the handle of the newly opened tab
         for (String handle : windowHandles) {
             if (!handle.equals(currentHandle)) {
-                // Yeni sekmeye geç
+                // Switch to the new tab
                 driver.switchTo().window(handle);
                 break;
             }
@@ -89,6 +89,7 @@ public class RMethods extends BaseTest {
     public void scrollTo(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", element);
     }
+
 
 
     //Flight

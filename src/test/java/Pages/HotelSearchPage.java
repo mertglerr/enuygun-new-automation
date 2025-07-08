@@ -45,38 +45,38 @@ public class HotelSearchPage {
         String checkInDateStr = checkInDate.format(backendFormat);
         String checkOutDateStr = checkOutDate.format(backendFormat);
 
-        // Sadece kullanıcıya görünen formatta class-level değişkenlere yaz
+        // Only store in class-level variables in user-visible format
         DateTimeFormatter prettyFormat = DateTimeFormatter.ofPattern("d MMMM yyyy", new Locale("tr", "TR"));
-        checkInDatePretty = checkInDate.format(prettyFormat);    // örnek: 24 Temmuz 2025
-        checkOutDatePretty = checkOutDate.format(prettyFormat);  // örnek: 27 Temmuz 2025
+        checkInDatePretty = checkInDate.format(prettyFormat);    // example: 24 July 2025
+        checkOutDatePretty = checkOutDate.format(prettyFormat);  // example: 27 July 2025
 
         utils.clickElementByDataId("hotel-datepicker-input");
         utils.waitFor(2000);
 
         WebElement checkInButton = driver.findElement(By.xpath("//button[@title='" + checkInDateStr + "']"));
-        Assert.assertTrue(checkInButton.isDisplayed(), "Giriş tarihi butonu görünmüyor: " + checkInDateStr);
+        Assert.assertTrue(checkInButton.isDisplayed(), "Check-in date button is not visible: " + checkInDateStr);
         checkInButton.click();
 
         WebElement checkOutButton = driver.findElement(By.xpath("//button[@title='" + checkOutDateStr + "']"));
-        Assert.assertTrue(checkOutButton.isDisplayed(), "Çıkış tarihi butonu görünmüyor: " + checkOutDateStr);
+        Assert.assertTrue(checkOutButton.isDisplayed(), "Check-out date button is not visible: " + checkOutDateStr);
         checkOutButton.click();
     }
 
     public void hotelReservation() throws InterruptedException {
 
-        // arama butonuna tiklar ve izmir yazar
+        // clicks the search box and types Izmir
         utils.clickAndSendKeysByDataId("endesign-hotel-autosuggestion-input", "izmir");
         utils.waitFor(1000);
 
-        // izmir seçeneğine tiklar
+        // clicks the Izmir option
         utils.clickElementByDataId("endesign-hotel-autosuggestion-option-item-0");
         utils.waitFor(1000);
 
-        // tarih seçimi yapar
+        // selects the dates
         selectCheckInAndCheckOutDates();
         utils.waitFor(1000);
 
-        // Konuk sayisi secimi yapar
+        // selects the number of guests
         utils.clickElementByDataId("hotel-popover-button");
         utils.waitFor(500);
         utils.clickElementByDataId("hotel-adult-counter-minus-button");
@@ -84,46 +84,45 @@ public class HotelSearchPage {
         utils.clickElementByDataId("hotel-guest-submit-button");
         utils.waitFor(500);
 
-        // otel bul butonuna tiklar
+        // clicks the "Find Hotel" button
         RMethods.clickByExactText("Otel bul");
 
-        // 'sec' butonu görünene kadar bekle (en fazla 10 saniye)
+        // wait until the "select" button becomes visible (max 10 seconds)
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[@class='sc-dAlyuH jUGfXx'])[1]")));
 
-        // Artık 'sec' butonu görünüyor, buradan sonrası devam edebilir
+        // Now the "select" button is visible, can continue from here
     }
 
     public void randomSelectHotel() {
         SoftAssert softAssert = new SoftAssert();
 
-        // Tüm otel başlıklarını al
+        // Get all hotel title elements
         List<WebElement> hotelButtons = driver.findElements(By.xpath("//*[@data-testid='result-title']"));
-        Assert.assertFalse(hotelButtons.isEmpty(), " Otel listesi boş!");
+        Assert.assertFalse(hotelButtons.isEmpty(), "Hotel list is empty!");
 
-        // Rastgele seçim
+        // Random selection
         Random rand = new Random();
         int randomIndex = rand.nextInt(hotelButtons.size());
 
-        // Seçilen otelin adını al ve class-level değişkene ata
+        // Get the name of the selected hotel and assign it to the class-level variable
         selectedHotelName = hotelButtons.get(randomIndex).getText();
 
-        // Oteli tıkla
+        // Click on the selected hotel
         hotelButtons.get(randomIndex).click();
 
-        // Yeni sekmeye geç
+        // Switch to the new tab
         utils.switchToNewTab();
         utils.waitFor(2000);
 
-        // Yeni sekmede görünen otel adını al
+        // Get the hotel name on the new tab
         String el2 = driver.findElement(By.xpath("//*[@data-testid='hotel-title']")).getText();
 
-        // Karşılaştır
-        softAssert.assertEquals(el2, selectedHotelName, " Otel başlıkları eşleşmiyor!");
+        // Compare
+        softAssert.assertEquals(el2, selectedHotelName, "Hotel titles do not match!");
 
-        // Sonuçları bildir
+        // Report results
         softAssert.assertAll();
     }
-
 
 }

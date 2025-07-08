@@ -14,7 +14,7 @@ public class GuestInfoPage {
 
     public GuestInfoPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);  // Bu satır çok önemli
+        PageFactory.initElements(driver, this);  // This line is very important
     }
 
     private String mail;
@@ -28,13 +28,13 @@ public class GuestInfoPage {
     public void inputGuestDetails() {
         Faker faker = new Faker();
 
-        // Faker verilerini sınıf değişkenlerine ata
+        // Assign faker data to class variables
         this.mail = faker.internet().emailAddress();
         this.phone = "550000000";
         this.name = faker.name().firstName();
         this.lastname = faker.name().lastName();
 
-        // Verileri inputlara gönder
+        // Send data to inputs
         utils.clickAndSendKeysByDataId("contact-email", this.mail);
         utils.clickAndSendKeysByDataId("contactPhone", this.phone);
         utils.clickAndSendKeysByDataId("room-first-name", this.name);
@@ -43,7 +43,7 @@ public class GuestInfoPage {
         maleButton.click();
     }
 
-    // getter metotları
+    // getter methods
     public String getMail() {
         return mail;
     }
